@@ -1,0 +1,31 @@
+; --- Serial Communication Initialization ---
+; Connecting to COM21 at 115200 bps
+connect '/C=21 /BAUD=115200'
+
+; --- Step 1: Check AT command responsiveness ---
+sendln 'AT'
+wait 'OK'
+
+; --- Step 2: Retrieve signal strength ---
+sendln 'AT+CSQ'
+wait '+CSQ:'
+wait 'OK'
+
+; --- Step 3: Verify SIM card status ---
+sendln 'AT+CPIN?'
+wait '+CPIN: READY'
+wait 'OK'
+
+; --- Step 4: Get current operator information ---
+sendln 'AT+COPS?'
+wait '+COPS:'
+wait 'OK'
+
+; --- Step 5: Short delay to allow final readout ---
+pause 1500  ; Wait for 1.5 seconds
+
+; --- Step 6: Confirm script has run to completion ---
+messagebox 'All AT checks completed. Device is ready.' 'Execution Notice'
+
+; --- Step 7: Close session ---
+closett
